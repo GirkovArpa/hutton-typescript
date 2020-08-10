@@ -8,7 +8,8 @@ const ENTIRELY_LOWER_CASE: RegExp = /^[a-z]*$/;
 
 export const validate = (...args: string[]): void => {
   args.forEach((s: string) => {
-    if (!ENTIRELY_LOWER_CASE.test(s)) throw new Error(`String must consist of lowercase letters only. Received ${JSON.stringify(s)}.`);
+    if (!ENTIRELY_LOWER_CASE.test(s))
+      throw new Error(`String must consist of lowercase letters only. Received ${JSON.stringify(s)}.`);
   });
 }
 
@@ -28,12 +29,12 @@ export const swap = (s: string, i: number, j: number): string => {
   return swapped;
 }
 
-const emptyIfIn = (set: Set<char>) => (c: char): string => set.has(c) ? '' : c;
+const nothingIfIn = (set: Set<char>) => (c: char): string => set.has(c) ? '' : c;
 
 export const permutate = (key: string): string => {
   const set: Set<char> = new Set(key);
   const uniques: string = [...set].join('');
-  const diff: string = ALPHABET.replace(ALL_LOWER_CASE, emptyIfIn(set));
+  const diff: string = ALPHABET.replace(ALL_LOWER_CASE, nothingIfIn(set));
   const perm: string = uniques.concat(diff);
   return perm;
 }
