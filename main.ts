@@ -2,23 +2,21 @@
 
 import { getPermutation } from './getPermutation.ts';
 
-export const encrypt = (inp: string, pw: string, key: string): string => {
-  let password = pw.repeat(Math.ceil(inp.replace(/[^A-Za-z]/g, '').length / pw.length)).split('');
-  let input = inp.toString().split('');
+
+export const encrypt = (pt: string, pw: string, k: string, perm: string[] = [...getPermutation(k)] ): string => {
   const alphabet = 'abcdefghijklmnopqrstuvwxyz';
-  let alphabetKeyed = getPermutation(key);
-  const alphabetKeyedConstant = alphabetKeyed.join('').toUpperCase();
+  const alphabetKeyedConstant = perm.join('').toUpperCase();
   let output = '';
-  for (let i = 0; i < input.length; i++) {
-    let shift = alphabet.indexOf(password[i]) + 1;
-    shift += alphabet.indexOf(alphabetKeyed[0]) + 1;
-    let outputLetterIndex = (shift + alphabetKeyed.indexOf(input[i])) % alphabet.length;
-    let outputLetter = alphabetKeyed[outputLetterIndex];
-    output += outputLetter;
-    let alphabetKeyedIndex = alphabetKeyed.indexOf(input[i]);
-    [alphabetKeyed[outputLetterIndex], alphabetKeyed[alphabetKeyedIndex]] = [alphabetKeyed[alphabetKeyedIndex], alphabetKeyed[outputLetterIndex]];
+  for (let i = 0; i < pt.length; i++) {
+    let shift = alphabet.indexOf(pw[i % pw.length]);
+    shift += alphabet.indexOf(perm[0]);
+    shift += 2;
+    const ptL = pt[i];
+    let ctL_i = (shift + perm.indexOf(ptL)) % alphabet.length;
+    let ctL = perm[ctL_i];
+    output += ctL;
+    let ptL_i = perm.indexOf(ptL);
+    [perm[ctL_i], perm[ptL_i]] = [perm[ptL_i], perm[ctL_i]];
   }
   return output;
 }
-
-console.log(encrypt('helloworld', 'foo', 'bar'));
