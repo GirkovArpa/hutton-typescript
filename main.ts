@@ -1,41 +1,42 @@
 'use strict';
 
-const abc = 'abcdefghijklmnopqrstuvwxyz';
+type char = string;
+
+const ALPHABET: string = 'abcdefghijklmnopqrstuvwxyz';
 
 export const swap = (s: string, i: number, j: number): string => {
   let a: string[] = [...s];
   [a[i], a[j]] = [a[j], a[i]];
-  const swapped = a.join('');
+  const swapped: string = a.join('');
   return swapped;
 }
 
-const emptyStringIfInSet = (set: Set<string>) => (char: string) => set.has(char) ? '' : char;
-const allLowerCaseChars = /[a-z]/g;
+const emptyStringIfInSet = (set: Set<char>) => (c: char): string => set.has(c) ? '' : c;
+const allLowerCaseChars: RegExp = /[a-z]/g;
 
-export const permutate = (key: string): string => {
-  const set: Set<string> = new Set(key);
+export const permutateAlphabet = (key: string): string => {
+  const set: Set<char> = new Set(key);
   const uniques: string = [...set].join('');
-  const alphabet: string = 'abcdefghijklmnopqrstuvwxyz';
-  const difference: string = alphabet.replace(allLowerCaseChars, emptyStringIfInSet(set));
-  const permutation: string = uniques.concat(difference);
-  return permutation;
+  const diff: string = ALPHABET.replace(allLowerCaseChars, emptyStringIfInSet(set));
+  const perm: string = uniques.concat(diff);
+  return perm;
 }
 
-export const encrypt = (pt: string, pw: string, k: string, ct: string = '', perm: string = permutate(k)): string => {
-  const [pwL] = pw;
-  const pwL_i = abc.indexOf(pwL);
-  const [permL] = perm;
-  const permL_i = abc.indexOf(permL);
-  const shift = (pwL_i + permL_i + 2);
-  const [ptL] = pt;
-  const ctL_i = (shift + perm.indexOf(ptL)) % 26;
-  const ctL = perm[ctL_i];
-  const ptL_i = perm.indexOf(ptL);
+export const encrypt = (pt: string, pw: string, k: string, ct: string = '', perm: string = permutateAlphabet(k)): string => {
+  const [pwC]: char = pw;
+  const pwC_i: number = ALPHABET.indexOf(pwC);
+  const [permC]: char = perm;
+  const permC_i: number = ALPHABET.indexOf(permC);
+  const shift: number = (pwC_i + permC_i + 2);
+  const [ptC]: char = pt;
+  const ctC_i: number = (shift + perm.indexOf(ptC)) % ALPHABET.length;
+  const ctC: char = perm[ctC_i];
+  const ptC_i: number = perm.indexOf(ptC);
 
-  const ptSlice = pt.slice(1);
-  const pwSlice = pw.slice(1);
-  const ctNew = ct.concat(ctL);
-  const permSwapped = swap(perm, ptL_i, ctL_i);
-  
+  const ptSlice: string = pt.slice(1);
+  const pwSlice: string = pw.slice(1);
+  const ctNew: string = ct.concat(ctC);
+  const permSwapped: string = swap(perm, ptC_i, ctC_i);
+
   return (pt.length === 0) ? ct : encrypt(ptSlice, pwSlice, k, ctNew, permSwapped);
 }
