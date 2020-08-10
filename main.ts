@@ -55,7 +55,7 @@ export const encrypt = (pt: string, pw: string, k: string, ct: string = '', perm
   const ctNew: string = ct.concat(ctC);
   const permSwapped: string = swap(perm, ptC_i, ctC_i);
 
-  return (pt.length === 0) ? (ct) : encrypt(ptSlice, pwRotated, k, ctNew, permSwapped);
+  return (pt.length === 0) ? ct : encrypt(ptSlice, pwRotated, k, ctNew, permSwapped);
 }
 
 export const decrypt = (ct: string, pw: string, k: string, pt: string = '', perm: string = permutate(k)): string => {
@@ -75,5 +75,5 @@ export const decrypt = (ct: string, pw: string, k: string, pt: string = '', perm
   const ptNew: string = pt.concat(ptC);
   const permSwapped: string = swap(perm, ctC_i, ptC_i);
 
-  return (ct.length === 0) ? (pt) : decrypt(ctSlice, pwRotated, k, ptNew, permSwapped);
+  return (ct.length === 0) ? pt : decrypt(ctSlice, pwRotated, k, ptNew, permSwapped);
 }
