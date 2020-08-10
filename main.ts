@@ -22,15 +22,20 @@ export const permutate = (key: string): string => {
 }
 
 export const encrypt = (pt: string, pw: string, k: string, ct: string = '', perm: string = permutate(k)): string => {
-  if (!pt.length) return ct;
   const [pwL] = pw;
-  let shift = abc.indexOf(pwL);
-  const [firstCharOfPerm] = perm;
-  shift += abc.indexOf(firstCharOfPerm);
-  shift += 2;
+  const pwL_i = abc.indexOf(pwL);
+  const [permL] = perm;
+  const permL_i = abc.indexOf(permL);
+  const shift = (pwL_i + permL_i + 2);
   const [ptL] = pt;
-  let ctL_i = (shift + perm.indexOf(ptL)) % 26;
-  let ctL = perm[ctL_i];
-  let ptL_i = perm.indexOf(ptL);
-  return encrypt(pt.slice(1), pw.slice(1), k, ct + ctL, swap(perm, ptL_i, ctL_i));
+  const ctL_i = (shift + perm.indexOf(ptL)) % 26;
+  const ctL = perm[ctL_i];
+  const ptL_i = perm.indexOf(ptL);
+
+  const ptSlice = pt.slice(1);
+  const pwSlice = pw.slice(1);
+  const ctNew = ct.concat(ctL);
+  const permSwapped = swap(perm, ptL_i, ctL_i);
+  
+  return (pt.length === 0) ? ct : encrypt(ptSlice, pwSlice, k, ctNew, permSwapped);
 }
