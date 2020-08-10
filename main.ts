@@ -1,8 +1,16 @@
 'use strict';
+
 type char = string;
 
 const ALPHABET: string = 'abcdefghijklmnopqrstuvwxyz';
 const ALL_LOWER_CASE: RegExp = /[a-z]/g;
+const ENTIRELY_LOWER_CASE: RegExp = /^[a-z]*$/;
+
+export const validate = (...args: string[]): void => {
+  args.forEach((s: string) => {
+    if (!ENTIRELY_LOWER_CASE.test(s)) throw new Error(`String must consist of lowercase letters only. Received ${JSON.stringify(s)}.`);
+  });
+}
 
 export const mod = (n: number, m: number): number => ((n % m) + m) % m;
 
@@ -20,17 +28,18 @@ export const swap = (s: string, i: number, j: number): string => {
   return swapped;
 }
 
-const emptyStringIfInSet = (set: Set<char>) => (c: char): string => set.has(c) ? '' : c;
+const emptyIfIn = (set: Set<char>) => (c: char): string => set.has(c) ? '' : c;
 
 export const permutate = (key: string): string => {
   const set: Set<char> = new Set(key);
   const uniques: string = [...set].join('');
-  const diff: string = ALPHABET.replace(ALL_LOWER_CASE, emptyStringIfInSet(set));
+  const diff: string = ALPHABET.replace(ALL_LOWER_CASE, emptyIfIn(set));
   const perm: string = uniques.concat(diff);
   return perm;
 }
 
 export const encrypt = (pt: string, pw: string, k: string, ct: string = '', perm: string = permutate(k)): string => {
+  validate(pt, pw, k, ct, perm);
   const [pwC]: char = pw;
   const pwC_i: number = ALPHABET.indexOf(pwC);
   const [permC]: char = perm;
@@ -50,6 +59,7 @@ export const encrypt = (pt: string, pw: string, k: string, ct: string = '', perm
 }
 
 export const decrypt = (ct: string, pw: string, k: string, pt: string = '', perm: string = permutate(k)): string => {
+  validate(pt, pw, k, ct, perm);
   const [pwC]: char = pw; 
   const pwC_i: number = ALPHABET.indexOf(pwC);
   const [permC]: char = perm;

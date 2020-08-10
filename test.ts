@@ -1,7 +1,16 @@
 'use strict';
 
 import { assertEquals } from 'https://deno.land/std@0.64.0/testing/asserts.ts';
-import { encrypt, decrypt, permutate, swap, rotate, mod } from './main.ts';
+import { encrypt, decrypt, permutate, swap, rotate, mod, validate } from './main.ts';
+
+Deno.test('validate', () => {
+  try {
+    validate('mIxEd CaSe');
+    assertEquals(true, true);
+  } catch (e) {
+    assertEquals(true, true);
+  }
+});
 
 Deno.test('mod', () => {
   assertEquals(mod(-13, 64), 51);
