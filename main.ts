@@ -49,21 +49,21 @@ export const encrypt = (pt: string, pw: string, k: string, ct: string = '', perm
   return (pt.length === 0) ? (ct) : encrypt(ptSlice, pwRotated, k, ctNew, permSwapped);
 }
 
-export const decrypt = (pt: string, pw: string, k: string, ct: string = '', perm: string = permutate(k)): string => {
+export const decrypt = (ct: string, pw: string, k: string, pt: string = '', perm: string = permutate(k)): string => {
   const [pwC]: char = pw; 
   const pwC_i: number = ALPHABET.indexOf(pwC);
   const [permC]: char = perm;
   const permC_i: number = ALPHABET.indexOf(permC);
   const shift: number = -(pwC_i + permC_i + 2);
-  const [ptC]: char = pt;
-  const ctC_i: number = mod((shift + perm.indexOf(ptC)), ALPHABET.length);
-  const ctC: char = perm[ctC_i];
-  const ptC_i: number = perm.indexOf(ptC);
+  const [ctC]: char = ct;
+  const ptC_i: number = mod((shift + perm.indexOf(ctC)), ALPHABET.length);
+  const ptC: char = perm[ptC_i];
+  const ctC_i: number = perm.indexOf(ctC);
 
-  const ptSlice: string = pt.slice(1);
+  const ctSlice: string = ct.slice(1);
   const pwRotated: string = rotate(pw);
-  const ctNew: string = ct.concat(ctC);
-  const permSwapped: string = swap(perm, ptC_i, ctC_i);
+  const ptNew: string = pt.concat(ptC);
+  const permSwapped: string = swap(perm, ctC_i, ptC_i);
 
-  return (pt.length === 0) ? (ct) : decrypt(ptSlice, pwRotated, k, ctNew, permSwapped);
+  return (ct.length === 0) ? (pt) : decrypt(ctSlice, pwRotated, k, ptNew, permSwapped);
 }
