@@ -6,7 +6,7 @@ import { encrypt, decrypt, permutate, swap, rotate, mod, validate } from './main
 Deno.test('validate', () => {
   try {
     validate('mIxEd CaSe');
-    assertEquals(true, true);
+    assertEquals(true, false);
   } catch (e) {
     assertEquals(true, true);
   }
