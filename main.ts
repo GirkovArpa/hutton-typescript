@@ -4,6 +4,13 @@ type char = string;
 
 const ALPHABET: string = 'abcdefghijklmnopqrstuvwxyz';
 
+export const rotate = (s: string): string => {
+  const [c]: char = s;
+  const sliced: string = s.slice(1);
+  const rotated: string  = sliced.concat(c);
+  return rotated;
+}
+
 export const swap = (s: string, i: number, j: number): string => {
   let a: string[] = [...s];
   [a[i], a[j]] = [a[j], a[i]];
@@ -34,9 +41,9 @@ export const encrypt = (pt: string, pw: string, k: string, ct: string = '', perm
   const ptC_i: number = perm.indexOf(ptC);
 
   const ptSlice: string = pt.slice(1);
-  const pwSlice: string = pw.slice(1);
+  const pwRotated: string = rotate(pw);
   const ctNew: string = ct.concat(ctC);
   const permSwapped: string = swap(perm, ptC_i, ctC_i);
 
-  return (pt.length === 0) ? ct : encrypt(ptSlice, pwSlice, k, ctNew, permSwapped);
+  return (pt.length === 0) ? ct : encrypt(ptSlice, pwRotated, k, ctNew, permSwapped);
 }
