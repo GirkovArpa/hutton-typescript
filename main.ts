@@ -2,9 +2,9 @@
 
 type char = string;
 
-const ALPHABET: string = 'abcdefghijklmnopqrstuvwxyz';
-const ALL_LOWER_CASE: RegExp = /[a-z]/g;
-const ENTIRELY_LOWER_CASE: RegExp = /^[a-z]*$/;
+const ALPHABET = 'abcdefghijklmnopqrstuvwxyz';
+const ALL_LOWER_CASE = /[a-z]/g;
+const ENTIRELY_LOWER_CASE = /^[a-z]*$/;
 
 export const validate = (...args: string[]): void => {
   args.forEach((s: string) => {
@@ -39,7 +39,7 @@ export const permutate = (key: string): string => {
   return perm;
 }
 
-export const encrypt = (pt: string, pw: string, k: string, ct: string = '', perm: string = permutate(k)): string => {
+export const encrypt = (pt: string, pw: string, k: string, ct = '', perm: string = permutate(k)): string => {
   validate(pt, pw, k, ct, perm);
   const [pwC]: char = pw;
   const pwC_i: number = ALPHABET.indexOf(pwC);
@@ -59,7 +59,7 @@ export const encrypt = (pt: string, pw: string, k: string, ct: string = '', perm
   return (pt.length === 0) ? ct : encrypt(ptSlice, pwRotated, k, ctNew, permSwapped);
 }
 
-export const decrypt = (ct: string, pw: string, k: string, pt: string = '', perm: string = permutate(k)): string => {
+export const decrypt = (ct: string, pw: string, k: string, pt = '', perm: string = permutate(k)): string => {
   validate(pt, pw, k, ct, perm);
   const [pwC]: char = pw; 
   const pwC_i: number = ALPHABET.indexOf(pwC);
