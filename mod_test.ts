@@ -1,7 +1,7 @@
 'use strict';
 
 import { assertEquals } from 'https://deno.land/std@0.64.0/testing/asserts.ts';
-import { encrypt, decrypt, permutate, swap, rotate, mod, validate } from './main.ts';
+import { encrypt, decrypt, permutate, swap, rotate, mod, validate } from './mod.ts';
 
 Deno.test('validate', () => {
   try {
